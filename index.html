@@ -18,35 +18,33 @@
     </div>
 
     <script>
-        const apiUrl = 'https://formybaby-o0xv4ayj1-eums046s-projects.vercel.app/translate'; // Ensure this is the correct URL
-
         function translateText() {
             const text = document.getElementById('search').value;
-            const fromLang = 'en'; // default source language
-            const toLang = 'es'; // default target language
+            const fromLang = 'tl'; // Tagalog as the source language
+            const toLang = 'en'; // English as the target language
 
             fetch('https://formybaby-o0xv4ayj1-eums046s-projects.vercel.app/translate', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ text, fromLang, toLang }),
-})
-.then(response => {
-    if (!response.ok) {
-        throw new Error('Translation failed');
-    }
-    return response.json();
-})
-.then(data => {
-    console.log('Translation Success:', data); // Check the response data
-    document.getElementById('translation').innerText = `Translated Text: ${data.translatedText}`;
-})
-.catch(error => {
-    console.error('Error:', error); // Log the error for debugging
-    document.getElementById('translation').innerText = 'An error occurred while fetching the translation.';
-});
-
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ text, fromLang, toLang }),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Translation failed');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Translation Success:', data); // Check the response data
+                document.getElementById('translation').innerText = `Translated Text: ${data.translatedText}`;
+            })
+            .catch(error => {
+                console.error('Error:', error); // Log the error for debugging
+                document.getElementById('translation').innerText = 'An error occurred while fetching the translation.';
+            });
+        }
     </script>
 </body>
 </html>

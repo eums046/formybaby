@@ -3,59 +3,53 @@ const translate = require('@vitalets/google-translate-api');
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Basic middleware
 app.use(express.json());
+app.use(express.static('public'));
 
-// Simple request logging middleware (optional)
+// Simple request logging
 app.use((req, res, next) => {
     console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
     next();
 });
 
-// Translation endpoint
+// Allow all origins
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    res.header('Access-Control-Allow-Methods', 'POST');
+    next();
+});
+
 app.post('/translate', async (req, res) => {
-    const { text, fromLang, toLang } = req.body;
+    const { text } = req.body;
     
-    // Input validation
     if (!text || typeof text !== 'string' || text.trim().length === 0) {
         return res.status(400).json({ 
             success: false, 
-            error: 'Invalid or missing text' 
+            error: 'Please enter some text to translate' 
         });
     }
 
     try {
         const response = await translate(text, { 
-            from: fromLang || 'tl', 
-            to: toLang || 'en' 
+            from: 'tl',  // Tagalog
+            to: 'en'     // English
         });
 
         res.json({
             success: true,
             originalText: text,
-            translatedText: response.text,
-            detectedLanguage: response.from.language.iso
+            translatedText: response.text
         });
     } catch (error) {
         console.error('Translation error:', error);
         res.status(500).json({ 
             success: false,
-            error: 'Translation failed',
-            message: 'An error occurred during translation'
+            error: 'Translation failed. Please try again.'
         });
     }
 });
 
-// Basic error handler
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({ 
-        success: false,
-        error: 'Server error',
-        message: 'An unexpected error occurred'
-    });
-});
-
 app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
+    console.log(`Server running at http://localhost:${port}`);
 });

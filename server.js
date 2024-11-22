@@ -1,6 +1,6 @@
 const express = require('express');
-const cors = require('cors'); // Import cors package
-const fetch = require('node-fetch'); // Import node-fetch to make HTTP requests
+const cors = require('cors');
+const fetch = require('node-fetch');
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -25,8 +25,8 @@ app.post('/translate', async (req, res) => {
     }
 
     try {
-        // Making a POST request to LibreTranslate API
-        const response = await fetch('https://libretranslate.de/translate', {
+        // Use CORS proxy (e.g., cors-anywhere) to avoid CORS issues
+        const response = await fetch(`https://cors-anywhere.herokuapp.com/https://libretranslate.de/translate`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

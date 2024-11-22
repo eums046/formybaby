@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors'); // Import cors package
-const translate = require('@vitalets/google-translate-api');
+const fetch = require('node-fetch'); // Import node-fetch to make HTTP requests
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -15,7 +15,7 @@ app.use((req, res, next) => {
 });
 
 app.post('/translate', async (req, res) => {
-    const { text } = req.body;
+    const { text, fromLang = 'tl', toLang = 'en' } = req.body;
 
     if (!text || typeof text !== 'string' || text.trim().length === 0) {
         return res.status(400).json({ 
@@ -25,15 +25,29 @@ app.post('/translate', async (req, res) => {
     }
 
     try {
-        const response = await translate(text, { 
-            from: 'tl',  // Tagalog
-            to: 'en'     // English
+        // Making a POST request to LibreTranslate API
+        const response = await fetch('https://libretranslate.de/translate', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                q: text,
+                source: fromLang,
+                target: toLang,
+            }),
         });
+
+        if (!response.ok) {
+            throw new Error('Translation failed');
+        }
+
+        const data = await response.json();
 
         res.json({
             success: true,
             originalText: text,
-            translatedText: response.text
+            translatedText: data.translatedText,
         });
     } catch (error) {
         console.error('Translation error:', error);

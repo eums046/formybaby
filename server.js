@@ -20,6 +20,13 @@ app.post('/translate', async (req, res) => {
         });
     }
 
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'https://formybaby.vercel.app'); // or '*' for any origin
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE'); // Allow specific HTTP methods
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // Allow specific headers
+  next();
+});
+    
     try {
         const response = await axios.get(`${lingvaBaseURL}/api/v1/${fromLang}/${toLang}/${encodeURIComponent(text)}`);
         const translatedText = response.data.translation;

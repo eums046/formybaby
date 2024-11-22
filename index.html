@@ -23,12 +23,17 @@
             const fromLang = 'tl'; // Tagalog as the source language
             const toLang = 'en'; // English as the target language
 
-            fetch('https://formybaby-o0xv4ayj1-eums046s-projects.vercel.app/translate', {
+            // Making a POST request to the LibreTranslate API
+            fetch('https://libretranslate.de/translate', {  // Using LibreTranslate's public API endpoint
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ text, fromLang, toLang }),
+                body: JSON.stringify({
+                    q: text,
+                    source: fromLang,
+                    target: toLang
+                }),
             })
             .then(response => {
                 if (!response.ok) {

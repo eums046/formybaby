@@ -23,19 +23,23 @@
             const fromLang = 'en'; // default source language
             const toLang = 'es'; // default target language
 
-            fetch('http://localhost:3000/translate', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ text, fromLang, toLang }),
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Translation failed');
-                }
-                return response.json();
-            })
+            fetch(apiUrl, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ text, fromLang, toLang }),
+})
+.then(response => response.json())
+.then(data => {
+    console.log('Translation Success:', data); // Check the response data
+    document.getElementById('translation').innerText = data.translatedText;
+})
+.catch(error => {
+    console.error('Error:', error); // Log the error for debugging
+    document.getElementById('translation').innerText = 'An error occurred while fetching the translation.';
+});
+
             .then(data => {
                 console.log('Translation Success:', data); // Check the response data
                 document.getElementById('translation').innerText = `Translated Text: ${data.translatedText}`;

@@ -1,8 +1,10 @@
 const express = require('express');
+const cors = require('cors'); // Import cors package
 const translate = require('@vitalets/google-translate-api');
 const app = express();
 const port = process.env.PORT || 3000;
 
+app.use(cors()); // Enable all CORS requests
 app.use(express.json());
 app.use(express.static('public'));
 
@@ -12,17 +14,9 @@ app.use((req, res, next) => {
     next();
 });
 
-// Allow all origins
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
-    res.header('Access-Control-Allow-Methods', 'POST');
-    next();
-});
-
 app.post('/translate', async (req, res) => {
     const { text } = req.body;
-    
+
     if (!text || typeof text !== 'string' || text.trim().length === 0) {
         return res.status(400).json({ 
             success: false, 

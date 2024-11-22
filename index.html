@@ -3,44 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <title>Formygirl</title>
+    <title>Formygirl Translation</title>
 </head>
 <body>
-    <div class="baby">
-        <h1>LOVE ANO NGA ULIT ENGLISH NG......?</h1>
+    <div>
+        <h1>Translate Text</h1>
         <form id="translateForm" onsubmit="event.preventDefault(); translateText();">
-            <label for="search">Search:</label>
-            <input type="search" id="search" name="q" placeholder="Type your sentence here, baby.">
-            <button type="submit">Go</button>
+            <label for="text">Text:</label>
+            <input type="text" id="text" placeholder="Enter text to translate">
+            <button type="submit">Translate</button>
         </form>
-        <p id="translation"></p> <!-- Element to display translated text -->
+        <p id="result"></p>
     </div>
 
     <script>
         async function translateText() {
-            const text = document.getElementById('search').value;
-            const fromLang = 'tl'; // Tagalog
-            const toLang = 'en'; // English
+            const text = document.getElementById('text').value;
+            const fromLang = 'en'; // Source language
+            const toLang = 'es'; // Target language
 
             try {
-                const response = await fetch('https://formybaby-39rolkppn-eums046s-projects.vercel.app/translate', {
+                const response = await fetch('/translate', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ text, fromLang, toLang }),
                 });
 
-                if (!response.ok) {
-                    throw new Error('Translation failed');
-                }
+                if (!response.ok) throw new Error('Translation failed');
 
                 const data = await response.json();
-                document.getElementById('translation').innerText = `Translated Text: ${data.translatedText}`;
+                document.getElementById('result').textContent = data.translatedText || 'No translation found';
             } catch (error) {
-                console.error('Error:', error);
-                document.getElementById('translation').innerText = 'An error occurred while fetching the translation.';
+                console.error(error);
+                document.getElementById('result').textContent = 'Error: Could not translate the text.';
             }
         }
     </script>

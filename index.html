@@ -18,37 +18,30 @@
     </div>
 
     <script>
-        function translateText() {
+        async function translateText() {
             const text = document.getElementById('search').value;
-            const fromLang = 'tl'; // Tagalog as the source language
-            const toLang = 'en'; // English as the target language
+            const fromLang = 'tl'; // Tagalog
+            const toLang = 'en'; // English
 
-            // Making a POST request to the LibreTranslate API
-            fetch('https://libretranslate.de/translate', {  // Using LibreTranslate's public API endpoint
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    q: text,
-                    source: fromLang,
-                    target: toLang
-                }),
-            })
-            .then(response => {
+            try {
+                const response = await fetch('/translate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ text, fromLang, toLang }),
+                });
+
                 if (!response.ok) {
                     throw new Error('Translation failed');
                 }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Translation Success:', data); // Check the response data
+
+                const data = await response.json();
                 document.getElementById('translation').innerText = `Translated Text: ${data.translatedText}`;
-            })
-            .catch(error => {
-                console.error('Error:', error); // Log the error for debugging
+            } catch (error) {
+                console.error('Error:', error);
                 document.getElementById('translation').innerText = 'An error occurred while fetching the translation.';
-            });
+            }
         }
     </script>
 </body>

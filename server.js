@@ -3,27 +3,37 @@ const axios = require('axios');
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(express.json());
 app.use(express.static('public'));
+app.use(express.json());
 
-// API endpoint
-app.post('/translate', async (req, res) => {
-  const { text, fromLang, toLang } = req.body;
+// API endpoint to handle translation
+app.get('/translate', async (req, res) => {
+    const { q, langpair } = req.query;
+    const mymemoryBaseURL = 'https://api.mymemory.translated.net/get';
 
-  if (!text || typeof text !== 'string' || text.trim().length === 0) {
-    return res.status(400).json({ success: false, error: 'Please provide text to translate' });
-  }
+    if (!q || !langpair) {
+        return res.status(400).json({ responseStatus: 400, error: 'Missing required parameters' });
+    }
 
-  try {
-    const response = await axios.post('http://localhost:4000/translate', { text, fromLang, toLang });
-    res.json({ success: true, originalText: text, translatedText: response.data.translatedText });
-  } catch (error) {
-    console.error('Translation error:', error.message);
-    res.status(500).json({ success: false, error: 'Translation failed. Please try again.' });
-  }
+    try {
+        const response = await axios.get(`${mymemoryBaseURL}?q=${encodeURIComponent(q)}&langpair=${langpair}`);
+        const translatedText = response.data.responseData.translatedText;
+
+        res.json({
+            responseStatus: 200,
+            responseData: {
+                translatedText: translatedText
+            }
+        });
+    } catch (error) {
+        console.error('Translation error:', error.message);
+        res.status(500).json({
+            responseStatus: 500,
+            error: 'Translation failed. Please try again.'
+        });
+    }
 });
 
-// Start the server
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+    console.log(`Server is running on http://localhost:${port}`);
 });

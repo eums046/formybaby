@@ -4,24 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
-    <title>Formygirl Translation</title>
+    <title>Formygirl</title>
 </head>
 <body>
-    <div>
-        <h1>Translate Text</h1>
+    <div class="baby">
+        <h1>LOVE ANO NGA ULIT ENGLISH NG......?</h1>
+
         <form id="translateForm" onsubmit="event.preventDefault(); translateText();">
-            <label for="text">Text:</label>
-            <input type="text" id="text" placeholder="Enter text to translate">
-            <button type="submit">Translate</button>
+            <label for="search">Search:</label>
+            <input type="search" id="search" name="q" placeholder="Type your sentence here, baby.">
+            <button type="submit">Go</button>
         </form>
-        <p id="result"></p>
+
+        <p id="translation"></p> <!-- Element to display translated text -->
     </div>
 
     <script>
         async function translateText() {
-            const text = document.getElementById('text').value;
+            const text = document.getElementById('search').value;
             const fromLang = 'en'; // Source language
-            const toLang = 'es'; // Target language
+            const toLang = 'es'; // Target language (example, can be dynamic)
 
             try {
                 const response = await fetch('/translate', {
@@ -33,10 +35,10 @@
                 if (!response.ok) throw new Error('Translation failed');
 
                 const data = await response.json();
-                document.getElementById('result').textContent = data.translatedText || 'No translation found';
+                document.getElementById('translation').textContent = data.translatedText || 'No translation found';
             } catch (error) {
                 console.error(error);
-                document.getElementById('result').textContent = 'Error: Could not translate the text.';
+                document.getElementById('translation').textContent = 'Error: Could not translate the text.';
             }
         }
     </script>

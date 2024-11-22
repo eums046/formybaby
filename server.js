@@ -3,6 +3,9 @@ const express = require('express');
 const translate = require('@vitalets/google-translate-api');  // Updated package
 
 const app = express();
+const cors = require('cors');
+app.use(cors());  // This allows all origins (for testing, consider restricting this for production)
+
 const apiUrl = 'https://formybaby-o0xv4ayj1-eums046s-projects.vercel.app/translate';
 
 

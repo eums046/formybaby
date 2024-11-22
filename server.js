@@ -1,64 +1,33 @@
 const express = require('express');
 const translate = require('@vitalets/google-translate-api');
-const cors = require('cors');
-const rateLimit = require('express-rate-limit');
-
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Rate limiting
-const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100 // limit each IP to 100 requests per windowMs
-});
-
-// Apply rate limiting
-app.use(limiter);
-
-// CORS configuration
-const allowedOrigins = [
-    'https://formybaby.vercel.app',
-    'http://localhost:3000'
-];
-
-app.use(cors({
-    origin: function(origin, callback) {
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
-    methods: ['POST'],
-    allowedHeaders: ['Content-Type']
-}));
-
-// Body parser middleware
+// Basic middleware
 app.use(express.json());
 
-// Input validation middleware
-const validateTranslationInput = (req, res, next) => {
-    const { text, fromLang, toLang } = req.body;
-    
-    if (!text || typeof text !== 'string' || text.trim().length === 0) {
-        return res.status(400).json({ error: 'Invalid or missing text' });
-    }
-    
-    if (!fromLang || !toLang) {
-        return res.status(400).json({ error: 'Missing language parameters' });
-    }
-    
+// Simple request logging middleware (optional)
+app.use((req, res, next) => {
+    console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
     next();
-};
+});
 
 // Translation endpoint
-app.post('/translate', validateTranslationInput, async (req, res) => {
+app.post('/translate', async (req, res) => {
     const { text, fromLang, toLang } = req.body;
     
+    // Input validation
+    if (!text || typeof text !== 'string' || text.trim().length === 0) {
+        return res.status(400).json({ 
+            success: false, 
+            error: 'Invalid or missing text' 
+        });
+    }
+
     try {
         const response = await translate(text, { 
-            from: fromLang, 
-            to: toLang 
+            from: fromLang || 'tl', 
+            to: toLang || 'en' 
         });
 
         res.json({
@@ -77,7 +46,7 @@ app.post('/translate', validateTranslationInput, async (req, res) => {
     }
 });
 
-// Error handling middleware
+// Basic error handler
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).json({ 
@@ -87,7 +56,6 @@ app.use((err, req, res, next) => {
     });
 });
 
-// Start server
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });

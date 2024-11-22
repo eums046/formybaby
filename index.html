@@ -9,38 +9,13 @@
 <body>
     <div class="baby">
         <h1>LOVE ANO NGA ULIT ENGLISH NG......?</h1>
-
         <form id="translateForm" onsubmit="event.preventDefault(); translateText();">
             <label for="search">Search:</label>
             <input type="search" id="search" name="q" placeholder="Type your sentence here, baby.">
             <button type="submit">Go</button>
         </form>
-
         <p id="translation"></p> <!-- Element to display translated text -->
     </div>
-
-    <script>
-        async function translateText() {
-            const text = document.getElementById('search').value;
-            const fromLang = 'en'; // Source language
-            const toLang = 'es'; // Target language (example, can be dynamic)
-
-            try {
-                const response = await fetch('/translate', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ text, fromLang, toLang }),
-                });
-
-                if (!response.ok) throw new Error('Translation failed');
-
-                const data = await response.json();
-                document.getElementById('translation').textContent = data.translatedText || 'No translation found';
-            } catch (error) {
-                console.error(error);
-                document.getElementById('translation').textContent = 'Error: Could not translate the text.';
-            }
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>

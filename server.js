@@ -3,7 +3,8 @@ const express = require('express');
 const translate = require('@vitalets/google-translate-api');  // Updated package
 
 const app = express();
-const port = 3000;
+const apiUrl = 'https://formybaby-o0xv4ayj1-eums046s-projects.vercel.app/translate';
+
 
 // Middleware to parse JSON bodies
 app.use(express.json());

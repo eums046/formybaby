@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Formygirl</title>
+</head>
+<body>
+    <div class="baby">
+        <h1>LOVE ANO NGA ULIT ENGLISH NG......?</h1>
+        <form id="translateForm" onsubmit="event.preventDefault(); translateText();">
+            <label for="search">Search:</label>
+            <input type="search" id="search" name="q" placeholder="Type your sentence here, baby.">
+            <button type="submit">Go</button>
+        </form>
+        <p id="translation"></p> <!-- Element to display translated text -->
+    </div>
+
+    <script>
+        function translateText() {
+            const text = document.getElementById('search').value;
+            const fromLang = 'en'; // default source language
+            const toLang = 'es'; // default target language
+
+            fetch('http://localhost:3000/translate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ text, fromLang, toLang }),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Translation failed');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Translation Success:', data); // Check the response data
+                document.getElementById('translation').innerText = `Translated Text: ${data.translatedText}`;
+            })
+            .catch(error => {
+                console.error('Error:', error); // Log the error for debugging
+                document.getElementById('translation').innerText = 'An error occurred while fetching the translation.';
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+/* Apply styles to the body */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-image: url('pic.jpg'); /* Sets the background image */
+    height: 100vh; /* Full height of the viewport */
+    background-size: cover; /* Cover the container */
+    background-position: center; /* Center the image */
+    display: flex; /* Use Flexbox */
+    flex-direction: row; /* Horizontal layout */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    margin: 0; /* Remove default margins */
+}
+
+/* Style for the container */
+.baby {
+    text-align: center; /* Center-align text */
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+    padding: 50px; /* Inner spacing */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+}
+
+/* Style for the heading */
+.baby h1 {
+    font-size: 2rem;
+    color: #333; /* Text color */
+}
+
+/* Style for the search input field */
+.baby input[type="search"] {
+    width: 280px; /* Adjust the width to make it longer */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+    font-size: 16px; /* Make the text inside larger for better readability */
+}
+
+
+/* Style for the button */
+.baby button {
+    padding: 10px 15px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Hover effect for the button */
+.baby button:hover {
+    background-color: #0056b3; /* Darker blue */
+}

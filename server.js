@@ -18,7 +18,7 @@ app.get('/translate', async (req, res) => {
 
     try {
         // Add the API key as a parameter in the request
-        const response = await axios.get(`${mymemoryBaseURL}?q=${encodeURIComponent(q)}&langpair=${langpair}&key=${apiKey}`);
+        const response = await axios.get(`${mymemoryBaseURL}?q=${encodeURIComponent(q)}&langpair=${langpair}&key=${8f0aec1d9fb2c8a3d879}`);
         const translatedText = response.data.responseData.translatedText;
 
         res.json({

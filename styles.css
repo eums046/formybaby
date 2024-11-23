@@ -1,5 +1,5 @@
 /* Apply styles to the body */
-body {
+html body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     background-image: url('/pic.jpg'); /* Sets the background image */
     height: 100vh; /* Full height of the viewport */

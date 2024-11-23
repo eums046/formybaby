@@ -1,9 +1,9 @@
 async function translateText() {
     const text = document.getElementById('search').value;
-    const targetLang = 'en|es'; // Example: translating to Spanish
+    const targetLang = 'ta|en'; // Example: translating to Spanish
 
     if (!text) {
-        alert("Please enter a text to translate.");
+        alert("Type your sentence here, baby.");
         return;
     }
 

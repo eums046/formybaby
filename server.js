@@ -16,7 +16,7 @@ app.get('/translate', async (req, res) => {
     }
 
     const mymemoryBaseURL = 'https://api.mymemory.translated.net/get';
-    const apiKey = '8f0aec1d9fb2c8a3d879'; // Your API key
+    const apiKey = process.env.MYMEMORY_API_KEY || '8f0aec1d9fb2c8a3d879'; // Using an environment variable for API key
 
     try {
         // Make the translation API request
@@ -26,27 +26,6 @@ app.get('/translate', async (req, res) => {
         const translatedText = response.data.responseData.translatedText;
 
         // Send the translated text as a JSON response
-        res.json({
-            responseStatus: 200,
-            responseData: {
-                translatedText: translatedText
-            }
-        });
-    } catch (error) {
-        console.error('Translation error:', error.message);
-        res.status(500).json({
-            responseStatus: 500,
-            error: 'Translation failed. Please try again.'
-        });
-    }
-});
-
-
-    try {
-        // Add the API key as a parameter in the request
-        const response = await axios.get(`${mymemoryBaseURL}?q=${encodeURIComponent(q)}&langpair=${langpair}&key=${8f0aec1d9fb2c8a3d879}`);
-        const translatedText = response.data.responseData.translatedText;
-
         res.json({
             responseStatus: 200,
             responseData: {

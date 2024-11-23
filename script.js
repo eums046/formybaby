@@ -1,13 +1,19 @@
 async function translateText() {
     const text = document.getElementById('search').value;
-    const targetLang = 'ta|en'; // Example: translating to Spanish
+    const targetLang = 'tl|en'; // Example: translating to Filipino to English
 
     if (!text) {
         alert("Type your sentence here, baby.");
         return;
     }
 
-    const response = await fetch(`/translate?q=${encodeURIComponent(text)}&langpair=${targetLang}`);
+    // Check if you're running on Vercel (in production) or locally (localhost)
+const baseUrl = window.location.hostname === 'formybaby.vercel.app' 
+                ? 'https://formybaby.vercel.app' 
+                : 'http://localhost:3000'; // Local URL for development
+
+
+    const response = await fetch(`${baseUrl}/api/translate?q=${encodeURIComponent(text)}&langpair=${targetLang}`);
     const data = await response.json();
 
     if (data.responseStatus === 200) {
